@@ -1,9 +1,9 @@
 function run(argv) {
-    // 第一个参数是 bundleId，后面的参数是 uuids
+    // First argument is bundleId, remaining arguments are uuids
     let bundleId = argv[0] || "com.devon-technologies.think3";
     let dtp = Application(bundleId);
     let records = []
-    // 从第二个参数开始才是 uuid
+    // UUIDs start from the second argument
     for (let i = 1; i < argv.length; i++) {
         let uuid = argv[i];
         let r = dtp.getRecordWithUuid(uuid)

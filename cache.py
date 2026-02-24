@@ -127,7 +127,7 @@ class Cache:
         import subprocess
         import json
         from config import UserConfig
-        # 第一个参数传递 bundleId，后面的参数是 uuids
+        # First argument passes bundleId, remaining arguments are uuids
         return json.loads(subprocess.check_output(['osascript', '-l', 'JavaScript', 'uuid.js', UserConfig.devonthink_bundle_id] + list(uuids)))
 
     def get_or_fetch_multithread(self, uuids, modification_dates):
