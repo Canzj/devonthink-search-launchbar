@@ -15,6 +15,8 @@ from logger import logger
 from cache import Cache
 from config import UserConfig
 
+DEVONTHINK_BUNDLE_ID = UserConfig.devonthink_bundle_id
+
 """An middle layer that handles the records returned by JXA.
 
 Using record (or r) to represent JXA returned record,
@@ -110,7 +112,7 @@ class DEVONthink:
         pass
         
     def activate(self):
-        cmd = ['osascript', '-e', 'tell application "DEVONthink 3" to activate']
+        cmd = ['osascript', '-e', f'tell application id "{DEVONTHINK_BUNDLE_ID}" to activate']
         subprocess.call(cmd)
 
     def reveal_item(self, uuid, is_smart_group=False):
@@ -173,7 +175,11 @@ class DEVONthink:
         return [to_lb_item(r, candidate_uuids) for r in children]
 
     def _call_jsx_get_group_children(self, uuid):
-        output = subprocess.check_output(['osascript', '-l', 'JavaScript', 'group.js', uuid])
+        jsonArg = json.dumps({
+            'uuid': uuid,
+            'bundleId': DEVONTHINK_BUNDLE_ID
+        })
+        output = subprocess.check_output(['osascript', '-l', 'JavaScript', 'group.js', jsonArg])
         return json.loads(output)
 
     def _call_jsx_search(self, query, field):
@@ -181,12 +187,14 @@ class DEVONthink:
             jsonArg = json.dumps({
                 'query': query,
                 'field': field,
-                'range': [0, MAX_RESULT_NUM]
+                'range': [0, MAX_RESULT_NUM],
+                'bundleId': DEVONTHINK_BUNDLE_ID
             })
         else:
             jsonArg = json.dumps({
                 'query': query,
                 'field': field,
+                'bundleId': DEVONTHINK_BUNDLE_ID
             })
 
         logger.debug('start search js query: {}'.format(query))

@@ -35,7 +35,8 @@ function run(argv) {
 }
 
 function searchOnce(jsonArg) {
-    let dtp = Application("DEVONthink 3");
+    let bundleId = jsonArg.bundleId || "com.devon-technologies.think3";
+    let dtp = Application(bundleId);
     let field = jsonArg.field;
     let dbUuids = jsonArg.dbUuids;
     let query = jsonArg.query;

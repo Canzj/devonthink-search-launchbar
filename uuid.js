@@ -1,7 +1,11 @@
 function run(argv) {
-    let dtp = Application("DEVONthink 3");
+    // 第一个参数是 bundleId，后面的参数是 uuids
+    let bundleId = argv[0] || "com.devon-technologies.think3";
+    let dtp = Application(bundleId);
     let records = []
-    for (let uuid of argv) {
+    // 从第二个参数开始才是 uuid
+    for (let i = 1; i < argv.length; i++) {
+        let uuid = argv[i];
         let r = dtp.getRecordWithUuid(uuid)
         records.push({
             name: r.name(),

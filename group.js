@@ -1,7 +1,9 @@
-function run(uuid) {
-    let dtp = Application("DEVONthink 3");
+function run(argv) {
+    let jsonArg = JSON.parse(argv[0]);
+    let bundleId = jsonArg.bundleId || "com.devon-technologies.think3";
+    let dtp = Application(bundleId);
 
-    let groupUuid = uuid.toString()
+    let groupUuid = jsonArg.uuid.toString()
     let group = dtp.getRecordWithUuid(groupUuid)
 
     let records = group.children()
